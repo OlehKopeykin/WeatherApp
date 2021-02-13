@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+    }
+    lintOptions {
+        lintConfig file("../lint.xml")
+        abortOnError false
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // kodein
+    implementation "org.kodein.di:kodein-di-generic-jvm:$dep.kodein_version"
+
+    // retrofit
+    api "com.squareup.retrofit2:retrofit:$dep.retrofit.retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$dep.retrofit.retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$dep.retrofit.retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$dep.retrofit.logging_interceptor_version"
+
+    // rx
+    implementation "io.reactivex.rxjava2:rxandroid:$dep.rx.rx_android_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$dep.rx.rx_kotlin_version"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$dep.rx.rx_android_version"
+
+    // room
+    implementation "androidx.room:room-runtime:$dep.androidx.room_version"
+    implementation "androidx.room:room-rxjava2:$dep.androidx.room_version"
+    kapt "androidx.room:room-compiler:$dep.androidx.room_version"
+
+    implementation project(':model')
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

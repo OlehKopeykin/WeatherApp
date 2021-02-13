@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/splashFragment">
+
+    <action
+        android:id="@+id/action_city_list"
+        app:destination="@id/cityListFragment"
+        app:enterAnim="@anim/enter_from_right"
+        app:exitAnim="@anim/exit_to_left"
+        app:popEnterAnim="@anim/enter_from_left"
+        app:popExitAnim="@anim/exit_to_right"
+        app:popUpTo="@+id/navigation"
+        app:popUpToInclusive="true"/>
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="by.olegkopeykin.weather.screens.splash.SplashFragment"
+        tools:layout="@layout/fragment_splash"/>
+
+    <fragment
+        android:id="@+id/selectCityFragment"
+        android:name="by.olegkopeykin.weather.screens.selectcity.SelectCityFragment"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_city_details"
+            app:destination="@id/cityDetailsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/cityListFragment"
+        android:name="by.olegkopeykin.weather.screens.citylist.CityListFragment"
+        tools:layout="@layout/fragment_splash">
+
+        <action
+            android:id="@+id/action_select_city"
+            app:destination="@id/selectCityFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right" />
+
+        <action
+            android:id="@+id/action_city_details"
+            app:destination="@id/cityDetailsFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/cityDetailsFragment"
+        android:name="by.olegkopeykin.weather.screens.citydetails.CityDetailsFragment"
+        tools:layout="@layout/fragment_splash"/>
+
+</navigation>

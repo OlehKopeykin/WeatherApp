@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="adapterCity"
+            type="by.olegkopeykin.weather.screens.selectcity.adapterlist.CityAdapter" />
+        <variable
+            name="adapterSearchCity"
+            type="by.olegkopeykin.weather.screens.selectcity.adaptersearch.SearchCityAdapter" />
+        <variable
+            name="viewModel"
+            type="by.olegkopeykin.weather.screens.selectcity.SelectCityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_percent="0.08"/>
+
+        <ImageView
+            android:id="@+id/imgvSearch"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintTop_toTopOf="@+id/etSearch"
+            app:layout_constraintBottom_toBottomOf="@+id/etSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_search_24dp"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/TitleTitle18"
+            tools:text="Name city"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/secondaryVariant"
+            android:textColorHighlight="@color/secondary"
+            android:text="@={viewModel.inputSearch}"
+            app:layout_constraintTop_toTopOf="@+id/guide"
+            app:layout_constraintStart_toEndOf="@+id/imgvSearch"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCities"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:adapter="@{adapterCity}"
+            app:items="@{viewModel.listCities}"
+            app:visibleGoneByList="@{viewModel.listCities}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/etSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:listitem="@layout/listitem_city" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:padding="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constrainedHeight="true"
+            android:background="@color/secondary"
+            app:adapter="@{adapterSearchCity}"
+            app:items="@{viewModel.listSearch}"
+            app:visibleGoneByList="@{viewModel.listSearch}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@+id/etSearch"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            tools:itemCount="3"
+            tools:listitem="@layout/listitem_city_search" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

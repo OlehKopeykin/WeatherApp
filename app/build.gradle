@@ -1,0 +1,89 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+
+    defaultConfig {
+        applicationId "by.olegkopeykin.weather"
+        multiDexEnabled true
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    lintOptions {
+        lintConfig file("../lint.xml")
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
+    implementation "com.google.android.material:material:$dep.androidx.material_version"
+    implementation "androidx.constraintlayout:constraintlayout:$dep.androidx.constraint_version"
+
+    implementation "androidx.multidex:multidex:$dep.multidex_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
+    implementation "com.google.android.material:material:$dep.androidx.material_version"
+    implementation "android.arch.lifecycle:extensions:$dep.androidx.lifecycle_extentions"
+    annotationProcessor "android.arch.lifecycle:compiler:$dep.androidx.lifecycle_extentions"
+    kapt "com.android.databinding:compiler:$dep.androidx.data_binding_compiler_version"
+    implementation "androidx.recyclerview:recyclerview-selection:$dep.androidx.material_recycleview_version"
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$dep.androidx.navifation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$dep.androidx.navifation_version"
+
+    // kodein
+    implementation "org.kodein.di:kodein-di-generic-jvm:$dep.kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-android-core:$dep.kodein_version"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$dep.kodein_version"
+
+    // rx
+    implementation "io.reactivex.rxjava2:rxandroid:$dep.rx.rx_android_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$dep.rx.rx_kotlin_version"
+    implementation "com.jakewharton.rxrelay2:rxrelay:$dep.rx.rx_android_version"
+    implementation "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$dep.rx.binding"
+
+    implementation "com.airbnb.android:lottie:$dep.lottieVersion"
+
+    // glide
+    implementation "com.github.bumptech.glide:glide:$dep.glide"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$dep.glide"
+    kapt "com.github.bumptech.glide:compiler:$dep.glide"
+
+    implementation project(':interactors')
+    implementation project(':model')
+    implementation project(':services')
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

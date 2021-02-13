@@ -1,0 +1,70 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext.kotlin_version = "1.3.72"
+
+    ext {
+        dep = {}
+        dep.androidx = {}
+
+        dep.gradle_tools_version = '4.1.2'
+
+        dep.androidx.constraint_version = '2.0.4'
+
+        dep.androidx.appcompat_version = '1.1.0'
+        dep.androidx.material_version = '1.2.1'
+
+        dep.androidx.appcompat_version = '1.1.0'
+        dep.androidx.core_runtime = '2.0.1'
+        dep.androidx.material_version = '1.2.1'
+        dep.androidx.material_recycleview_version = '1.1.0-rc03'
+        dep.androidx.constraint_version = '2.0.4'
+        dep.androidx.lifecycle_extentions = '1.1.1'
+        dep.androidx.navifation_version = '2.3.1'
+
+        dep.androidx.data_binding_compiler_version = '3.2.0'
+        dep.androidx.room_version = '2.2.5'
+        dep.retrofit = {}
+        dep.retrofit.retrofit_version = '2.3.0'
+        dep.retrofit.logging_interceptor_version = '3.12.1'
+
+        dep.kodein_version = '6.1.0'
+        dep.multidex_version = '2.0.1'
+
+        dep.gson_version = '2.8.0'
+        dep.permissions_version = '1.0.3'
+
+        dep.rx = {}
+        dep.rx.rx_android_version = '2.1.1'
+        dep.rx.rx_kotlin_version = '2.2.0'
+        dep.rx.rx_relay_version = '2.1.1'
+        dep.rx.binding = '2.0.0'
+
+        dep.glide = '4.11.0'
+        dep.lottieVersion = '3.0.6'
+    }
+
+    repositories {
+        mavenCentral()
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$dep.gradle_tools_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
