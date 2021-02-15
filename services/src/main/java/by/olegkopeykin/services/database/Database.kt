@@ -12,7 +12,7 @@ import by.olegkopeykin.services.database.dao.WeatherDao
         CityEntity::class,
         WeatherEntity::class
     ],
-    version = 2, exportSchema = false
+    version = 3, exportSchema = false
 )
 
 abstract class Database : RoomDatabase() {

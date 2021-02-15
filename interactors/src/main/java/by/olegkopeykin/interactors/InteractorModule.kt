@@ -14,7 +14,7 @@ import org.kodein.di.generic.singleton
 val interactorsModule = Kodein.Module("Interactors") {
 
     bind<PrefInteractor>() with singleton { PrefInteractorImpl(instance()) }
-    bind<CityInteractor>() with singleton { CityInteractorImpl(instance(), instance()) }
+    bind<CityInteractor>() with singleton { CityInteractorImpl(instance(), instance(), instance()) }
 
     bind<WeatherInteractor>() with singleton { WeatherInteractorImpl(instance(), instance(), instance()) }
 }

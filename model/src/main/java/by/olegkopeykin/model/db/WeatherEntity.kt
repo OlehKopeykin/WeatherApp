@@ -7,8 +7,11 @@ import androidx.room.PrimaryKey
 data class WeatherEntity(
     @PrimaryKey(autoGenerate = true) val id:Long = 0L,
     val nameCity:String,
+    val country : String,
     val lat : Double,
     val lon : Double,
+    val isFavorite: Boolean = false,
+
     val weatherTitle:String,
     val weatherDescription:String,
 
@@ -18,8 +21,9 @@ data class WeatherEntity(
 
     val feelLike : Double = 0.0,
 
-    val humidity:Int, //влажность
+    val humidity:Int,
     val clouds : Int,
     val windDeg: Int,
-    val windSpeed: Double
+    val windSpeed: Double,
+    val date: Long
 )

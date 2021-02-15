@@ -7,7 +7,9 @@ import io.reactivex.Single
 
 interface WeatherInteractor {
 
-    fun getCityWeatherNow(city:CityModel): Single<WeatherModel>
+    fun getCityWeatherNow(city:CityModel):  Single<WeatherModel>
     fun getCityWeatherOn7Days(city:CityModel): Single<List<WeatherModel>>
     fun getWeatherNowForCities(listCities: List<CityModel>): Single<List<WeatherModel>>
+
+    fun getWeatherNowCitiesFromDB(): Observable<List<WeatherModel>>
 }

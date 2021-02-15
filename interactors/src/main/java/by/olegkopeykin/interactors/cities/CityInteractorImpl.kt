@@ -1,5 +1,6 @@
 package by.olegkopeykin.interactors.cities
 
+import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.model.db.CityEntity
 import by.olegkopeykin.model.domain.CityModel
 import by.olegkopeykin.model.toDomain
@@ -7,12 +8,11 @@ import by.olegkopeykin.services.database.dao.CityDao
 import by.olegkopeykin.services.network.api.CityApi
 import io.reactivex.Completable
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.schedulers.Schedulers
 
-class CityInteractorImpl(private val cityApi: CityApi, private val cityDao: CityDao) : CityInteractor{
+class CityInteractorImpl(private val cityApi: CityApi, private val cityDao: CityDao, private val prefInteractor: PrefInteractor) : CityInteractor{
 
     override fun getCityByName(name: String): Single<List<CityModel>> {
         return if(name.isNullOrEmpty()){
@@ -80,9 +80,13 @@ class CityInteractorImpl(private val cityApi: CityApi, private val cityDao: City
                 listCities
             }
             .switchMapCompletable {
+                if(!it.isNullOrEmpty()){
+                    prefInteractor.setFirstInit()
+                }
                 cityDao.removeAllCities().andThen(cityDao.saveCities(it))
             }
             .subscribeOn(Schedulers.io())
+
     }
 
     override fun removeCityDB(city: CityModel): Completable {

@@ -5,10 +5,8 @@ import androidx.databinding.ObservableField
 import by.olegkopeykin.interactors.cities.CityInteractor
 import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.interactors.weather.WeatherInteractor
-import by.olegkopeykin.model.domain.CityModel
 import by.olegkopeykin.model.domain.WeatherModel
 import by.olegkopeykin.weather.common.BaseMvvmViewModel
-import by.olegkopeykin.weather.common.toObservable
 import by.olegkopeykin.weather.screens.citylist.adapter.CityWeatherListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -17,7 +15,6 @@ class CityListViewModel(router: CityListRouter,
                         private val prefInteractor: PrefInteractor,
                         private val weatherInteractor: WeatherInteractor) : BaseMvvmViewModel<CityListRouter>(router) {
 
-    private val listCities = ObservableField<List<CityModel>>(listOf())
     val listWeatherModels = ObservableField<List<WeatherModel>>(listOf())
     val isLightColorMode = ObservableBoolean(false)
 
@@ -26,11 +23,15 @@ class CityListViewModel(router: CityListRouter,
             router.showCityDetails(city)
         }
     }
+
     init {
         cityInteractor.getCities()
+            .switchMapSingle {
+                weatherInteractor.getWeatherNowForCities(it)
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                listCities.set(it)
+
             },{
                 it.printStackTrace()
             }).toComposite()
@@ -44,16 +45,10 @@ class CityListViewModel(router: CityListRouter,
             })
             .toComposite()
 
-        listCities.toObservable()
-            .switchMapSingle {
-                weatherInteractor.getWeatherNowForCities(it)
-            }
-            .map {
-                it.sortedBy { !it.isFavorite }
-            }
+        weatherInteractor.getWeatherNowCitiesFromDB()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                listWeatherModels.set(it)
+                listWeatherModels.set(it.sortedBy { it.nameCity }.sortedBy { !it.isFavorite })
             },{
                 it.printStackTrace()
             }).toComposite()

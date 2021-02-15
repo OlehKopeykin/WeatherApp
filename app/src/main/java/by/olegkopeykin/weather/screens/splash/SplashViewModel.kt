@@ -22,7 +22,6 @@ class SplashViewModel(
 
     init {
         if(isFirstInit){
-            interactorPref.setFirstInit()
             addDisposable(interactorCity.addDefaultCities()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe ({
