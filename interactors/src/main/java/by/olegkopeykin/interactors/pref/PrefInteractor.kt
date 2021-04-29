@@ -1,12 +1,11 @@
 package by.olegkopeykin.interactors.pref
 
-import io.reactivex.Observable
+import kotlinx.coroutines.flow.Flow
 
 interface PrefInteractor {
+	fun isFirstInit(): Boolean
+	fun setFirstInit()
 
-    fun isFirstInit(): Boolean
-    fun setFirstInit()
-
-    fun isLightMode(): Observable<Boolean>
-    fun changeColorMode()
+	fun isLightModeStateFlow(): Flow<Boolean>
+	fun changeLightMode()
 }

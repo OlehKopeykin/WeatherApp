@@ -1,117 +1,80 @@
 package by.olegkopeykin.interactors.cities
 
 import by.olegkopeykin.interactors.pref.PrefInteractor
-import by.olegkopeykin.model.db.CityEntity
 import by.olegkopeykin.model.domain.CityModel
+import by.olegkopeykin.model.network.CityResponse
 import by.olegkopeykin.model.toDomain
+import by.olegkopeykin.model.toEntity
 import by.olegkopeykin.services.database.dao.CityDao
 import by.olegkopeykin.services.network.api.CityApi
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.rxkotlin.Observables
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
-class CityInteractorImpl(private val cityApi: CityApi, private val cityDao: CityDao, private val prefInteractor: PrefInteractor) : CityInteractor{
+class CityInteractorImpl(
+	private val cityApi: CityApi,
+	private val cityDao: CityDao, private val prefInteractor: PrefInteractor
+) : CityInteractor {
 
-    override fun getCityByName(name: String): Single<List<CityModel>> {
-        return if(name.isNullOrEmpty()){
-            Single.just(emptyList())
-        }else{
-            cityApi.getCitiesByName(requestNameCity = name)
-                .map {
-                    val grouping = it.groupBy { it.country }
-                    val listResult = if(grouping.size >=2){
-                        grouping.map { item-> item.value.first() }
-                    }else if(grouping.size == 1){
-                        listOf(grouping.values.first().first())
-                    }else{
-                        emptyList()
-                    }
-                    listResult.map { it.toDomain() }
-                }
-                .onErrorReturn { listOf() }
-                .subscribeOn(Schedulers.io())
-        }
-    }
+	override suspend fun getCityByName(name: String): List<CityModel> = withContext(Dispatchers.IO) {
+		if (name.isBlank()) {
+			emptyList()
+		} else {
+			val grouping = cityApi.getCitiesByName(name).groupBy { it.country }
+			val listResult: List<CityResponse> = when {
+				grouping.size >= 2 -> grouping.map { item -> item.value.first() }
+				grouping.size == 1 -> listOf(grouping.values.first().first())
+				else -> emptyList()
+			}
+			listResult.map { it.toDomain() }
+		}
+	}
 
-    override fun setFavoriteCity(city: CityModel): Completable {
-        return cityDao.getCityByParams(city.lat, city.lon, city.name)
-            .flatMapCompletable { list->
-                if(!list.isNullOrEmpty()){
-                    val cityEntity = list.first()
-                    cityDao.updateCity(cityEntity.copy(isFavoriteCity = !city.isFavorite))
-                }else{
-                    Completable.complete()
-                }
-            }
-            .subscribeOn(Schedulers.io())
-    }
+	override suspend fun setFavoriteCity(city: CityModel) = withContext(Dispatchers.IO) {
+		cityDao.getCityByParams(city.lat, city.lon, city.name).let {
+			if (it.isEmpty()) {
+				val cityEntity = it.first()
+				cityDao.updateCity(cityEntity.copy(isFavoriteCity = !city.isFavorite))
+			}
+		}
+	}
 
-    override fun addDefaultCities(): Completable {
-        return Observables.combineLatest(
-            getCityByName("Minsk, BY").toObservable(),
-            getCityByName("Gomel,BY").toObservable(),
-            getCityByName("Grodno, BY").toObservable(),
-            getCityByName("Mogilev, BY").toObservable(),
-            getCityByName("Brest, BY").toObservable(),
-            getCityByName("Vitebsk, BY").toObservable())
-        { listMinsk, listGomel, listGrodno, listMogilev, listBrest, listVitebst->
+	override suspend fun addDefaultCities() = withContext(Dispatchers.IO) {
+		listOf(
+			async { getCityByName("Minsk, BY") },
+			async { getCityByName("Gomel,BY") },
+			async { getCityByName("Grodno, BY") },
+			async { getCityByName("Mogilev, BY") },
+			async { getCityByName("Brest, BY") },
+			async { getCityByName("Vitebsk, BY") }
+		).awaitAll().mapNotNull {
+			if (!it.isNullOrEmpty()) {
+				it.first().toEntity()
+			} else {
+				null
+			}
+		}.let {
+			if (!it.isNullOrEmpty()) { prefInteractor.setFirstInit() }
+			cityDao.removeAllCities()
+			cityDao.saveCities(it)
+		}
+	}
 
-                val listCities = ArrayList<CityEntity>()
-                if(!listMinsk.isNullOrEmpty()){
-                    listCities.add(listMinsk.first().toDomain())
-                }
-                if(!listGomel.isNullOrEmpty()){
-                    listCities.add(listGomel.first().toDomain())
-                }
-                if(!listGrodno.isNullOrEmpty()){
-                    listCities.add(listGrodno.first().toDomain())
-                }
-                if(!listMogilev.isNullOrEmpty()){
-                    listCities.add(listMogilev.first().toDomain())
-                }
-                if(!listBrest.isNullOrEmpty()){
-                    listCities.add(listBrest.first().toDomain())
-                }
-                if(!listVitebst.isNullOrEmpty()){
-                    listCities.add(listVitebst.first().toDomain())
-                }
-                listCities
-            }
-            .switchMapCompletable {
-                if(!it.isNullOrEmpty()){
-                    prefInteractor.setFirstInit()
-                }
-                cityDao.removeAllCities().andThen(cityDao.saveCities(it))
-            }
-            .subscribeOn(Schedulers.io())
+	override suspend fun removeCityDB(city: CityModel) = withContext(Dispatchers.IO) {
+		cityDao.removeCity(city.lat, city.lon, city.name)
+	}
 
-    }
+	override suspend fun saveCityDB(city: CityModel) = withContext(Dispatchers.IO) {
+		cityDao.getCityByParams(city.lat, city.lon, city.name).let {
+			if (it.isNullOrEmpty()) {
+				cityDao.saveCity(city.toEntity())
+			}
+		}
+	}
 
-    override fun removeCityDB(city: CityModel): Completable {
-        return cityDao.removeCity(city.lat, city.lon, city.name)
-            .subscribeOn(Schedulers.io())
-    }
-
-    override fun saveCityDB(city: CityModel): Completable {
-        return cityDao.getCityByParams(city.lat, city.lon, city.name)
-            .flatMapCompletable {
-                if(it.isNullOrEmpty()){
-                    cityDao.saveCity(city.toDomain())
-                }else{
-                    Completable.complete()
-                }
-            }
-            .subscribeOn(Schedulers.io())
-    }
-
-    override fun getCities(): Observable<List<CityModel>> {
-        return cityDao.getCities()
-            .map {
-                it.map { it.toDomain() }
-            }
-            .toObservable()
-            .subscribeOn(Schedulers.io())
-    }
+	override fun getCitiesDB(): Flow<List<CityModel>> {
+		return cityDao.getCities()
+			.map { listCities ->
+				listCities.map { it.toDomain() }
+			}.flowOn(Dispatchers.IO)
+	}
 }

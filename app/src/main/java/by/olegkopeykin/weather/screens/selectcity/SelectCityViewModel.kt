@@ -1,85 +1,85 @@
 package by.olegkopeykin.weather.screens.selectcity
 
 import androidx.databinding.ObservableField
+import androidx.lifecycle.viewModelScope
 import by.olegkopeykin.interactors.cities.CityInteractor
-import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.model.domain.CityModel
 import by.olegkopeykin.weather.common.BaseMvvmViewModel
-import by.olegkopeykin.weather.common.toObservable
+import by.olegkopeykin.weather.common.toFlow
 import by.olegkopeykin.weather.screens.selectcity.adapterlist.CityListener
 import by.olegkopeykin.weather.screens.selectcity.adaptersearch.SearchCityListener
-import io.reactivex.android.schedulers.AndroidSchedulers
-import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlin.time.ExperimentalTime
+import kotlin.time.milliseconds
 
-class SelectCityViewModel(router: SelectCityRouter,
-                          private val interactorCity: CityInteractor,
-                          private val interactorPref: PrefInteractor
+@ExperimentalCoroutinesApi
+@FlowPreview
+@ExperimentalTime
+class SelectCityViewModel(
+	router: SelectCityRouter,
+	private val interactorCity: CityInteractor
 ) : BaseMvvmViewModel<SelectCityRouter>(router) {
 
-    val listSearch = ObservableField<List<CityModel>>(listOf())
-    val listCities = ObservableField<List<CityModel>>(listOf())
+	val listSearch = ObservableField<List<CityModel>>(listOf())
+	val listCities = ObservableField<List<CityModel>>(listOf())
 
-    val inputSearch = ObservableField<String>("")
+	val inputSearch = ObservableField("")
 
-    val searchCityListener = object : SearchCityListener {
-        override fun onCityClick(city: CityModel) {
-            router.hideKeyboard()
-            inputSearch.set("")
-            interactorCity.saveCityDB(city)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+	val searchCityListener = object : SearchCityListener {
+		override fun onCityClick(city: CityModel) {
+			router.hideKeyboard()
+			inputSearch.set("")
+			viewModelScope.launch {
+				try {
+					interactorCity.saveCityDB(city)
+				} catch (e: Throwable) {
+					e.printStackTrace()
+				}
+			}
+		}
+	}
 
-                }, {
-                    it.printStackTrace()
-                }).toComposite()
-        }
-    }
+	val cityListener = object : CityListener {
+		override fun onCityClick(city: CityModel) {
 
-    val cityListener = object : CityListener {
-        override fun onCityClick(city: CityModel) {
+		}
 
-        }
+		override fun onFavoriteClick(city: CityModel) {
+			viewModelScope.launch {
+				try {
+					interactorCity.setFavoriteCity(city)
+				} catch (e: Throwable) {
+					e.printStackTrace()
+				}
+			}
+		}
 
-        override fun onFavoriteClick(city: CityModel) {
-            interactorCity.setFavoriteCity(city)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
+		override fun onDeleteClick(city: CityModel) {
+			viewModelScope.launch {
+				try {
+					interactorCity.removeCityDB(city)
+				} catch (e: Throwable) {
+					e.printStackTrace()
+				}
+			}
+		}
+	}
 
-                }, {
-                    it.printStackTrace()
-                }).toComposite()
-        }
+	init {
+		inputSearch.toFlow()
+			.debounce(500.milliseconds)
+			.onEach { cityName ->
+				interactorCity.getCityByName(cityName).also { listSearch.set(it) }
+			}
+			.catch { it.printStackTrace() }
+			.launchIn(viewModelScope)
 
-        override fun onDeleteClick(city: CityModel) {
-            interactorCity.removeCityDB(city)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-
-                }, {
-                    it.printStackTrace()
-                }).toComposite()
-        }
-    }
-
-    init {
-        inputSearch.toObservable()
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .switchMapSingle {
-                interactorCity.getCityByName(it)
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                listSearch.set(it)
-            }, {
-                it.printStackTrace()
-            }).toComposite()
-
-        interactorCity.getCities()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                listCities.set(it)
-            }, {
-                it.printStackTrace()
-            }).toComposite()
-    }
+		interactorCity.getCitiesDB()
+			.onEach { listCities.set(it) }
+			.catch { it.printStackTrace() }
+			.launchIn(viewModelScope)
+	}
 }

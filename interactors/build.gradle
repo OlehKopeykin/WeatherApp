@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 android {
     compileSdkVersion 30
@@ -18,19 +19,16 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$dep.kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$dep.kotlin_coroutines_core_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$dep.kotlin_coroutines_core_version"
 
     // kodein
     implementation "org.kodein.di:kodein-di-generic-jvm:$dep.kodein_version"
 
     // retrofit
     implementation "com.squareup.retrofit2:retrofit:$dep.retrofit.retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$dep.retrofit.retrofit_version"
-
-    // rx
-    implementation "io.reactivex.rxjava2:rxkotlin:$dep.rx.rx_kotlin_version"
-    implementation "io.reactivex.rxjava2:rxandroid:$dep.rx.rx_android_version"
-    implementation "com.jakewharton.rxrelay2:rxrelay:$dep.rx.rx_android_version"
 
     implementation "com.google.code.gson:gson:$gson_version"
 

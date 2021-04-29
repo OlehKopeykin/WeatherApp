@@ -1,7 +1,7 @@
 package by.olegkopeykin.model.network.weather.onweek
 
 class Temp(
-    val day : Double = 0.0,
+    val day: Double = 0.0,
     val min: Double = 0.0,
     val max: Double = 0.0,
     val night: Double = 0.0,

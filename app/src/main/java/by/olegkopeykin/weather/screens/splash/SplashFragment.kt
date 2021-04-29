@@ -10,24 +10,24 @@ import by.olegkopeykin.weather.common.BaseMvvmFragment
 import by.olegkopeykin.weather.common.viewModelLazyInstance
 import by.olegkopeykin.weather.databinding.FragmentSplashBinding
 
-class SplashFragment: BaseMvvmFragment<SplashViewModel, SplashRouter>() {
+class SplashFragment : BaseMvvmFragment<SplashViewModel, SplashRouter>() {
 
-    override val viewModel: SplashViewModel by viewModelLazyInstance()
+	override val viewModel: SplashViewModel by viewModelLazyInstance()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val binding = DataBindingUtil.inflate<FragmentSplashBinding>(
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+		val binding = DataBindingUtil.inflate<FragmentSplashBinding>(
             inflater,
             R.layout.fragment_splash,
             container,
             false
         ).also {
-            it.viewModel = viewModel
-        }
-        return binding.root
-    }
+			it.viewModel = viewModel
+		}
+		return binding.root
+	}
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.doRouting()
-    }
+	override fun onResume() {
+		super.onResume()
+		viewModel.doRouting()
+	}
 }

@@ -11,7 +11,9 @@ import by.olegkopeykin.weather.common.BaseMvvmFragment
 import by.olegkopeykin.weather.common.viewModelLazyInstance
 import by.olegkopeykin.weather.databinding.FragmentCityListBinding
 import by.olegkopeykin.weather.screens.citylist.adapter.CityWeatherAdapter
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class CityListFragment : BaseMvvmFragment<CityListViewModel, CityListRouter>() {
 
     override val viewModel: CityListViewModel by viewModelLazyInstance()

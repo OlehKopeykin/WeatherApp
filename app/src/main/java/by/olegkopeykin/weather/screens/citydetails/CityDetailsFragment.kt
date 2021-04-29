@@ -6,38 +6,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import by.olegkopeykin.model.domain.CityModel
-import by.olegkopeykin.model.domain.WeatherModel
 import by.olegkopeykin.weather.R
 import by.olegkopeykin.weather.common.BaseMvvmFragment
 import by.olegkopeykin.weather.common.viewModelLazyFactory
-import by.olegkopeykin.weather.common.viewModelLazyInstance
 import by.olegkopeykin.weather.databinding.FragmentCityDetailsBinding
 import by.olegkopeykin.weather.screens.citydetails.adapter.CityDetailsAdapter
 
 class CityDetailsFragment : BaseMvvmFragment<CityDetailsViewModel, CityDetailsRouter>() {
 
-    override val viewModel: CityDetailsViewModel by viewModelLazyFactory{
-        arguments?.getParcelable(WEATHER_MODEL)?: WeatherModel.NONE
-    }
+	override val viewModel: CityDetailsViewModel by viewModelLazyFactory {
+		arguments?.getParcelable(CITY_MODEL) ?: CityModel.NONE
+	}
 
-    override fun onCreateView(
+	override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = DataBindingUtil.inflate<FragmentCityDetailsBinding>(
+		val binding = DataBindingUtil.inflate<FragmentCityDetailsBinding>(
             inflater,
             R.layout.fragment_city_details,
             container,
             false
         ).also {
-            it.viewModel = viewModel
-            it.adapter = CityDetailsAdapter()
-        }
-        return binding.root
-    }
+			it.viewModel = viewModel
+			it.adapter = CityDetailsAdapter()
+		}
+		return binding.root
+	}
 
-    companion object{
-        const val WEATHER_MODEL = "CITY_MODEL"
-    }
+	companion object {
+		const val CITY_MODEL = "CITY_MODEL"
+	}
 }

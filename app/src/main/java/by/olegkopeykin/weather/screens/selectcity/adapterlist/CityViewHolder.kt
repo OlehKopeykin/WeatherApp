@@ -9,10 +9,10 @@ class CityViewHolder(
     private val listener: CityListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(city: CityModel) {
-        binding.item = city
-        binding.name = "${city.name}, ${city.country}"
-        binding.listener = listener
-        binding.executePendingBindings()
-    }
+	fun bind(city: CityModel) {
+		binding.item = city
+		binding.name = "${city.name}, ${city.country}"
+		binding.listener = listener
+		binding.executePendingBindings()
+	}
 }

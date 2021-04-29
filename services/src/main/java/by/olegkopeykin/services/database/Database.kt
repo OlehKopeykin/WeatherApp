@@ -16,6 +16,6 @@ import by.olegkopeykin.services.database.dao.WeatherDao
 )
 
 abstract class Database : RoomDatabase() {
-    abstract fun cityDao(): CityDao
-    abstract fun weatherDao(): WeatherDao
+	abstract fun cityDao(): CityDao
+	abstract fun weatherDao(): WeatherDao
 }

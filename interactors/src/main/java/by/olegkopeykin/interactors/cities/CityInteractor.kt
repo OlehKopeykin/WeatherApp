@@ -1,19 +1,17 @@
 package by.olegkopeykin.interactors.cities
 
 import by.olegkopeykin.model.domain.CityModel
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
-interface CityInteractor{
+interface CityInteractor {
 
-    fun getCityByName(name:String): Single<List<CityModel>>
+	suspend fun getCityByName(name: String): List<CityModel>
 
-    fun getCities():Observable<List<CityModel>>
-    fun saveCityDB(city: CityModel): Completable
-    fun removeCityDB(city: CityModel): Completable
+	fun getCitiesDB(): Flow<List<CityModel>>
+	suspend fun saveCityDB(city: CityModel)
+	suspend fun removeCityDB(city: CityModel)
 
-    fun addDefaultCities():Completable
+	suspend fun addDefaultCities()
 
-    fun setFavoriteCity(city: CityModel):Completable
+	suspend fun setFavoriteCity(city: CityModel)
 }

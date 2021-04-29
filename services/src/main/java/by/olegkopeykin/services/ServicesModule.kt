@@ -18,15 +18,15 @@ import org.kodein.di.generic.singleton
 
 val servicesModule = Kodein.Module("Services") {
 
-    //db
-    bind<DatabaseProvider>() with singleton { DatabaseProviderImpl(instance()) }
-    bind<CityDao>() with provider { instance<DatabaseProvider>().db.cityDao() }
-    bind<WeatherDao>() with provider { instance<DatabaseProvider>().db.weatherDao() }
+	//db
+	bind<DatabaseProvider>() with singleton { DatabaseProviderImpl(instance()) }
+	bind<CityDao>() with provider { instance<DatabaseProvider>().db.cityDao() }
+	bind<WeatherDao>() with provider { instance<DatabaseProvider>().db.weatherDao() }
 
-    //api
-    bind<NetworkService>() with singleton { NetworkServiceImpl() }
-    bind<CityApi>() with singleton { instance<NetworkService>().cityApi }
-    bind<WeatherApi>() with singleton { instance<NetworkService>().weatherApi }
+	//api
+	bind<NetworkService>() with singleton { NetworkServiceImpl() }
+	bind<CityApi>() with singleton { instance<NetworkService>().cityApi }
+	bind<WeatherApi>() with singleton { instance<NetworkService>().weatherApi }
 
-    bind<PreferencesHelper>() with singleton { PreferencesHelperImpl(instance()) }
+	bind<PreferencesHelper>() with singleton { PreferencesHelperImpl(instance()) }
 }

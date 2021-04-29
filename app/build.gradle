@@ -1,13 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "by.olegkopeykin.weather"
@@ -30,8 +30,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
@@ -43,19 +43,21 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
     implementation "com.google.android.material:material:$dep.androidx.material_version"
     implementation "androidx.constraintlayout:constraintlayout:$dep.androidx.constraint_version"
 
+    // kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$dep.kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$dep.kotlin_coroutines_core_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$dep.kotlin_coroutines_core_version"
+
     implementation "androidx.multidex:multidex:$dep.multidex_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
-    implementation "com.google.android.material:material:$dep.androidx.material_version"
-    implementation "android.arch.lifecycle:extensions:$dep.androidx.lifecycle_extentions"
-    annotationProcessor "android.arch.lifecycle:compiler:$dep.androidx.lifecycle_extentions"
-    kapt "com.android.databinding:compiler:$dep.androidx.data_binding_compiler_version"
     implementation "androidx.recyclerview:recyclerview-selection:$dep.androidx.material_recycleview_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$dep.lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+    implementation "com.google.android.material:material:$dep.androidx.material_version"
 
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$dep.androidx.navifation_version"
@@ -65,12 +67,6 @@ dependencies {
     implementation "org.kodein.di:kodein-di-generic-jvm:$dep.kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-core:$dep.kodein_version"
     implementation "org.kodein.di:kodein-di-framework-android-x:$dep.kodein_version"
-
-    // rx
-    implementation "io.reactivex.rxjava2:rxandroid:$dep.rx.rx_android_version"
-    implementation "io.reactivex.rxjava2:rxkotlin:$dep.rx.rx_kotlin_version"
-    implementation "com.jakewharton.rxrelay2:rxrelay:$dep.rx.rx_android_version"
-    implementation "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$dep.rx.binding"
 
     implementation "com.airbnb.android:lottie:$dep.lottieVersion"
 
@@ -83,7 +79,7 @@ dependencies {
     implementation project(':model')
     implementation project(':services')
 
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

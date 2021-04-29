@@ -2,25 +2,20 @@ package by.olegkopeykin.services.database.dao
 
 import androidx.room.*
 import by.olegkopeykin.model.db.WeatherEntity
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
 
-    @Query("select * from WeatherEntity")
-    fun getWeatherNow(): Flowable<List<WeatherEntity>>
+	@Query("select * from WeatherEntity")
+	fun getWeatherNow(): Flow<List<WeatherEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveWeather(weatherEntity: WeatherEntity): Completable
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	suspend fun saveWeather(weatherEntity: WeatherEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveWeathers(weatherEntity: List<WeatherEntity>): Completable
+	@Query("delete from WeatherEntity where lat = :lat and lon = :lon and nameCity = :name")
+	suspend fun removeWeathersCity(lat: Double, lon: Double, name: String)
 
-    @Query("delete from WeatherEntity where lat = :lat and lon = :lon and nameCity = :name")
-    fun removeWeathersCity(lat:Double, lon:Double, name:String):Completable
-
-    @Query("select * from WeatherEntity where lat = :lat and lon = :lon and nameCity = :name")
-    fun getWeatherEntityByParams(lat:Double, lon:Double, name:String): Single<List<WeatherEntity>>
+	@Query("select * from WeatherEntity where lat = :lat and lon = :lon and nameCity = :name")
+	suspend fun getWeatherEntityByParams(lat: Double, lon: Double, name: String): List<WeatherEntity>
 }
