@@ -6,13 +6,11 @@ import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.interactors.pref.PrefInteractorImpl
 import by.olegkopeykin.interactors.weather.WeatherInteractor
 import by.olegkopeykin.interactors.weather.WeatherInteractorImpl
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 
-@ExperimentalCoroutinesApi
 val interactorsModule = Kodein.Module("Interactors") {
 
 	bind<PrefInteractor>() with singleton { PrefInteractorImpl(instance()) }

@@ -19,12 +19,11 @@ class MainViewModel(prefInteractor: PrefInteractor) : BaseViewModel(),
 	CityDetailsRouter,
 	SelectCityRouter {
 
-	private val postNextScreen: MutableSharedFlow<Screens?> = MutableSharedFlow(
+	val nextScreen: Flow<Screens> get() = postNextScreen.asSharedFlow()
+	private val postNextScreen: MutableSharedFlow<Screens> = MutableSharedFlow(
 		replay = 1,
 		onBufferOverflow = BufferOverflow.DROP_LATEST
 	)
-	val nextScreen: Flow<Screens?>
-		get() = postNextScreen.asSharedFlow()
 
 	init {
 		prefInteractor.isLightModeStateFlow()

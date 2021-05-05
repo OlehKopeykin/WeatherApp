@@ -12,7 +12,6 @@ import androidx.navigation.Navigation
 import by.olegkopeykin.weather.R
 import by.olegkopeykin.weather.databinding.ActivityMainBinding
 import by.olegkopeykin.weather.screens.citydetails.CityDetailsFragment
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.kodein.di.Kodein
@@ -25,10 +24,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 	override val kodein: Kodein by kodein()
 	private val viewModel: MainViewModel by instance()
 	private val navigator: NavController
-		get() = Navigation.findNavController(
-			this,
-			R.id.navHostFragment
-		)
+		get() = Navigation.findNavController(this, R.id.navHostFragment)
 
 	private var binding: ActivityMainBinding? = null
 
@@ -40,26 +36,23 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 		viewModel.nextScreen.onEach { screen ->
 			try {
 				when (screen) {
-                    is Screens.PrevScreen -> {
-                        hideKeyboard()
-                        navigator.popBackStack()
-                    }
-                    is Screens.SelectCity -> {
-                        navigator.navigate(R.id.action_select_city)
-                    }
-                    is Screens.CityDetails -> {
-                        val args = Bundle()
-                        args.putParcelable(CityDetailsFragment.CITY_MODEL, screen.city)
-                        navigator.navigate(R.id.action_city_details, args)
-                    }
-                    is Screens.CityList -> {
-                        navigator.navigate(R.id.action_city_list)
-                    }
-                    is Screens.HideKeyboard -> {
-                        hideKeyboard()
-                    }
-					else -> {
-
+					is Screens.PrevScreen -> {
+						hideKeyboard()
+						navigator.popBackStack()
+					}
+					is Screens.SelectCity -> {
+						navigator.navigate(R.id.action_select_city)
+					}
+					is Screens.CityDetails -> {
+						val args = Bundle()
+						args.putParcelable(CityDetailsFragment.CITY_MODEL, screen.city)
+						navigator.navigate(R.id.action_city_details, args)
+					}
+					is Screens.CityList -> {
+						navigator.navigate(R.id.action_city_list)
+					}
+					is Screens.HideKeyboard -> {
+						hideKeyboard()
 					}
 				}
 			} catch (ex: Exception) {
@@ -69,13 +62,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
 	}
 
 	private fun hideKeyboard() {
-		var view = currentFocus
-		if (view == null) {
-			view = findViewById(android.R.id.content)
-			if (view == null) {
-				view = View(this)
-			}
-		}
+		val view = currentFocus ?: findViewById(android.R.id.content) ?: View(this)
 		val inputMethodManager =
 			(getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
 		inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)

@@ -14,7 +14,7 @@ class CityDetailsViewModel(
 	router: CityDetailsRouter,
 	val cityModel: CityModel,
 	private val weatherInteractor: WeatherInteractor,
-	private val interactorCity: CityInteractor
+	private val cityInteractor: CityInteractor
 ) :
 	BaseMvvmViewModel<CityDetailsRouter>(router) {
 
@@ -27,7 +27,7 @@ class CityDetailsViewModel(
 
 	private fun updateData() = viewModelScope.launch {
 		try {
-			weatherInteractor.getCityWeatherOn7Days(cityModel)
+			listWeather.set(weatherInteractor.getCityWeatherOn7Days(cityModel))
 		} catch (e: Throwable) {
 			e.printStackTrace()
 		}
@@ -35,9 +35,8 @@ class CityDetailsViewModel(
 
 	fun onFavoriteClick() = viewModelScope.launch {
 		try {
-			val isFavoriteValue = isFavorite.get()
-			interactorCity.setFavoriteCity(cityModel.copy(isFavorite = isFavoriteValue))
-			isFavorite.set(!isFavoriteValue)
+			cityInteractor.setFavoriteCity(cityModel)
+			isFavorite.set(!isFavorite.get())
 		} catch (e: Throwable) {
 			e.printStackTrace()
 		}
@@ -45,7 +44,7 @@ class CityDetailsViewModel(
 
 	fun onDeleteClick() = viewModelScope.launch {
 		try {
-			interactorCity.removeCityDB(cityModel)
+			cityInteractor.removeCityDB(cityModel)
 			router.onBackClick()
 		} catch (e: Throwable) {
 			e.printStackTrace()

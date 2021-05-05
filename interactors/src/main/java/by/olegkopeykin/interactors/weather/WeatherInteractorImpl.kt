@@ -9,36 +9,46 @@ import by.olegkopeykin.services.network.api.WeatherApi
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-@ExperimentalCoroutinesApi
 class WeatherInteractorImpl(
 	private val weatherDao: WeatherDao,
 	private val weatherApi: WeatherApi
 ) : WeatherInteractor {
 
-	override suspend fun getCityWeatherNow(city: CityModel): WeatherModel = withContext(Dispatchers.IO) {
-		val weather = weatherApi.getCityWeatherNow(lat = city.lat, lon = city.lon).toDomain(city)
-		weatherDao.getWeatherEntityByParams(weather.city.lat, weather.city.lon, weather.city.name)
-			.let {
-				if (!it.isNullOrEmpty()) {
-					weatherDao.removeWeathersCity(weather.city.lat, weather.city.lon, weather.city.name)
+	override suspend fun updateCityWeatherNow(city: CityModel): WeatherModel =
+		withContext(Dispatchers.IO) {
+			weatherApi.getCityWeatherNow(lat = city.lat, lon = city.lon).toDomain(city)
+				.also { weather ->
+					weatherDao.getWeatherEntityByParams(
+						weather.city.lat,
+						weather.city.lon,
+						weather.city.name
+					).let {
+						if (!it.isNullOrEmpty()) {
+							weatherDao.removeWeathersCity(
+								weather.city.lat,
+								weather.city.lon,
+								weather.city.name
+							)
+						}
+						weatherDao.saveWeather(weather.toEntity())
+					}
 				}
-				weatherDao.saveWeather(weather.toEntity())
-			}
-		weather
-	}
+		}
 
-	override suspend fun getCityWeatherOn7Days(city: CityModel): List<WeatherModel> = withContext(Dispatchers.IO) {
-		weatherApi.getCityWeatherOn7Days(lat = city.lat, lon = city.lon)
-			.daily?.map { it.toDomain(city) } ?: listOf()
-	}
+	override suspend fun getCityWeatherOn7Days(city: CityModel): List<WeatherModel> =
+		withContext(Dispatchers.IO) {
+			weatherApi.getCityWeatherOn7Days(lat = city.lat, lon = city.lon)
+				.daily?.map { it.toDomain(city) } ?: listOf()
+		}
 
-	override suspend fun getWeatherNowForCities(listCities: List<CityModel>): List<WeatherModel> = withContext(Dispatchers.IO) {
-		listCities.map {
-			async { getCityWeatherNow(it) }
-		}.awaitAll()
-	}
+	override suspend fun updateCitiesWeatherNow(listCities: List<CityModel>): List<WeatherModel> =
+		withContext(Dispatchers.IO) {
+			listCities.map {
+				async { updateCityWeatherNow(it) }
+			}.awaitAll()
+		}
 
-	override fun getWeatherNowCitiesFromDB(): Flow<List<WeatherModel>> {
+	override fun getCitiesWeatherNowFromDB(): Flow<List<WeatherModel>> {
 		return weatherDao.getWeatherNow()
 			.map { listWeather ->
 				listWeather.map { it.toDomain() }

@@ -5,20 +5,20 @@
     android:id="@+id/navigation"
     app:startDestination="@id/splashFragment">
 
-    <action
-        android:id="@+id/action_city_list"
-        app:destination="@id/cityListFragment"
-        app:enterAnim="@anim/enter_from_right"
-        app:exitAnim="@anim/exit_to_left"
-        app:popEnterAnim="@anim/enter_from_left"
-        app:popExitAnim="@anim/exit_to_right"
-        app:popUpTo="@+id/navigation"
-        app:popUpToInclusive="true"/>
-
     <fragment
         android:id="@+id/splashFragment"
         android:name="by.olegkopeykin.weather.screens.splash.SplashFragment"
-        tools:layout="@layout/fragment_splash"/>
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_city_list"
+            app:destination="@id/cityListFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpTo="@+id/navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/selectCityFragment"
@@ -30,7 +30,7 @@
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"/>
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment
@@ -52,12 +52,12 @@
             app:enterAnim="@anim/enter_from_right"
             app:exitAnim="@anim/exit_to_left"
             app:popEnterAnim="@anim/enter_from_left"
-            app:popExitAnim="@anim/exit_to_right"/>
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
 
     <fragment
         android:id="@+id/cityDetailsFragment"
         android:name="by.olegkopeykin.weather.screens.citydetails.CityDetailsFragment"
-        tools:layout="@layout/fragment_splash"/>
+        tools:layout="@layout/fragment_splash" />
 
 </navigation>

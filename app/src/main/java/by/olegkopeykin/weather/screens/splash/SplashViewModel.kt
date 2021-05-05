@@ -9,15 +9,15 @@ import kotlinx.coroutines.*
 
 class SplashViewModel(
 	router: SplashRouter,
-	interactorPref: PrefInteractor,
-	interactorCity: CityInteractor
+	prefInteractor: PrefInteractor,
+	cityInteractor: CityInteractor
 ) : BaseMvvmViewModel<SplashRouter>(router) {
 
 	private val addedCitiesJob: Job by lazy {
 		viewModelScope.launch {
-			if (interactorPref.isFirstInit()) {
+			if (prefInteractor.isFirstInit()) {
 				try {
-					interactorCity.addDefaultCities()
+					cityInteractor.addDefaultCities()
 				} catch (e: Throwable) {
 					e.printStackTrace()
 				}
@@ -29,17 +29,18 @@ class SplashViewModel(
 		addedCitiesJob.start()
 	}
 
-	fun doRouting() = viewModelScope.launch {
+	override fun onResume() {
+		super.onResume()
+		doRouting()
+	}
+
+	private fun doRouting() = viewModelScope.launch {
 		try {
 			listOf(addedCitiesJob, launch { delay(LAUNCH_TIMER_MS) }).joinAll()
-			routingScreens()
+			router.showCityList()
 		} catch (e: Throwable) {
 			e.printStackTrace()
 		}
-	}
-
-	private fun routingScreens() {
-		router.showCityList()
 	}
 
 	companion object {

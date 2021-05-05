@@ -15,23 +15,24 @@ class CityInteractorImpl(
 	private val cityDao: CityDao, private val prefInteractor: PrefInteractor
 ) : CityInteractor {
 
-	override suspend fun getCityByName(name: String): List<CityModel> = withContext(Dispatchers.IO) {
-		if (name.isBlank()) {
-			emptyList()
-		} else {
-			val grouping = cityApi.getCitiesByName(name).groupBy { it.country }
-			val listResult: List<CityResponse> = when {
-				grouping.size >= 2 -> grouping.map { item -> item.value.first() }
-				grouping.size == 1 -> listOf(grouping.values.first().first())
-				else -> emptyList()
+	override suspend fun getCityByName(name: String): List<CityModel> =
+		withContext(Dispatchers.IO) {
+			if (name.isBlank()) {
+				emptyList()
+			} else {
+				val grouping = cityApi.getCitiesByName(name).groupBy { it.country }
+				val listResult: List<CityResponse> = when {
+					grouping.size >= 2 -> grouping.map { item -> item.value.first() }
+					grouping.size == 1 -> listOf(grouping.values.first().first())
+					else -> emptyList()
+				}
+				listResult.map { it.toDomain() }
 			}
-			listResult.map { it.toDomain() }
 		}
-	}
 
 	override suspend fun setFavoriteCity(city: CityModel) = withContext(Dispatchers.IO) {
 		cityDao.getCityByParams(city.lat, city.lon, city.name).let {
-			if (it.isEmpty()) {
+			if (it.isNotEmpty()) {
 				val cityEntity = it.first()
 				cityDao.updateCity(cityEntity.copy(isFavoriteCity = !city.isFavorite))
 			}
@@ -53,7 +54,9 @@ class CityInteractorImpl(
 				null
 			}
 		}.let {
-			if (!it.isNullOrEmpty()) { prefInteractor.setFirstInit() }
+			if (!it.isNullOrEmpty()) {
+				prefInteractor.setFirstInit()
+			}
 			cityDao.removeAllCities()
 			cityDao.saveCities(it)
 		}

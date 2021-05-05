@@ -20,7 +20,7 @@ import kotlin.time.milliseconds
 @ExperimentalTime
 class SelectCityViewModel(
 	router: SelectCityRouter,
-	private val interactorCity: CityInteractor
+	private val cityInteractor: CityInteractor,
 ) : BaseMvvmViewModel<SelectCityRouter>(router) {
 
 	val listSearch = ObservableField<List<CityModel>>(listOf())
@@ -34,7 +34,7 @@ class SelectCityViewModel(
 			inputSearch.set("")
 			viewModelScope.launch {
 				try {
-					interactorCity.saveCityDB(city)
+					cityInteractor.saveCityDB(city)
 				} catch (e: Throwable) {
 					e.printStackTrace()
 				}
@@ -50,7 +50,7 @@ class SelectCityViewModel(
 		override fun onFavoriteClick(city: CityModel) {
 			viewModelScope.launch {
 				try {
-					interactorCity.setFavoriteCity(city)
+					cityInteractor.setFavoriteCity(city)
 				} catch (e: Throwable) {
 					e.printStackTrace()
 				}
@@ -60,7 +60,7 @@ class SelectCityViewModel(
 		override fun onDeleteClick(city: CityModel) {
 			viewModelScope.launch {
 				try {
-					interactorCity.removeCityDB(city)
+					cityInteractor.removeCityDB(city)
 				} catch (e: Throwable) {
 					e.printStackTrace()
 				}
@@ -72,12 +72,16 @@ class SelectCityViewModel(
 		inputSearch.toFlow()
 			.debounce(500.milliseconds)
 			.onEach { cityName ->
-				interactorCity.getCityByName(cityName).also { listSearch.set(it) }
+				try {
+					cityInteractor.getCityByName(cityName).also { listSearch.set(it) }
+				} catch (e: Throwable) {
+					e.printStackTrace()
+				}
 			}
 			.catch { it.printStackTrace() }
 			.launchIn(viewModelScope)
 
-		interactorCity.getCitiesDB()
+		cityInteractor.getCitiesDB()
 			.onEach { listCities.set(it) }
 			.catch { it.printStackTrace() }
 			.launchIn(viewModelScope)

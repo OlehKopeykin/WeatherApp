@@ -9,11 +9,9 @@ import by.olegkopeykin.interactors.weather.WeatherInteractor
 import by.olegkopeykin.model.domain.WeatherModel
 import by.olegkopeykin.weather.common.BaseMvvmViewModel
 import by.olegkopeykin.weather.screens.citylist.adapter.CityWeatherListener
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-@ExperimentalCoroutinesApi
 class CityListViewModel(
 	router: CityListRouter,
 	cityInteractor: CityInteractor,
@@ -32,13 +30,23 @@ class CityListViewModel(
 
 	init {
 		cityInteractor.getCitiesDB()
-			.flatMapLatest { weatherInteractor.getWeatherNowForCities(it).asFlow() }
+			.onEach {
+				try {
+					weatherInteractor.updateCitiesWeatherNow(it)
+				} catch (e: Throwable) {
+					e.printStackTrace()
+				}
+			}
 			.catch { it.printStackTrace() }
 			.launchIn(viewModelScope)
 
-		weatherInteractor.getWeatherNowCitiesFromDB()
+		weatherInteractor.getCitiesWeatherNowFromDB()
 			.onEach { listWeather ->
-				listWeatherModels.set(listWeather.sortedBy { it.city.name }.sortedBy { !it.city.isFavorite })
+				listWeatherModels.set(
+					listWeather
+						.sortedBy { it.city.name }
+						.sortedBy { !it.city.isFavorite }
+				)
 			}
 			.catch { it.printStackTrace() }
 			.launchIn(viewModelScope)

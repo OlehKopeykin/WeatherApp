@@ -14,20 +14,19 @@ class SplashFragment : BaseMvvmFragment<SplashViewModel, SplashRouter>() {
 
 	override val viewModel: SplashViewModel by viewModelLazyInstance()
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		val binding = DataBindingUtil.inflate<FragmentSplashBinding>(
-            inflater,
-            R.layout.fragment_splash,
-            container,
-            false
-        ).also {
+			inflater,
+			R.layout.fragment_splash,
+			container,
+			false
+		).also {
 			it.viewModel = viewModel
 		}
 		return binding.root
-	}
-
-	override fun onResume() {
-		super.onResume()
-		viewModel.doRouting()
 	}
 }
