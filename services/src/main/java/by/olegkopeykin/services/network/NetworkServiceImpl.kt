@@ -56,7 +56,7 @@ class NetworkServiceImpl : NetworkService {
     private fun errorInterceptor(): Interceptor {
         return Interceptor { chain ->
             val response = chain.proceed(chain.request())
-            val body = response.body()
+            val body = response.body
             if (response.isSuccessful.not() && body != null) {
                 val errorResponse = Response.error<ResponseBody>(body, response)
                 throw HttpException(errorResponse)

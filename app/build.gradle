@@ -1,19 +1,19 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.1"
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "by.olegkopeykin.weather"
         multiDexEnabled true
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0.0"
 
@@ -43,23 +43,21 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
     implementation "com.google.android.material:material:$dep.androidx.material_version"
     implementation "androidx.constraintlayout:constraintlayout:$dep.androidx.constraint_version"
 
     implementation "androidx.multidex:multidex:$dep.multidex_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$dep.androidx.appcompat_version"
     implementation "com.google.android.material:material:$dep.androidx.material_version"
-    implementation "android.arch.lifecycle:extensions:$dep.androidx.lifecycle_extentions"
-    annotationProcessor "android.arch.lifecycle:compiler:$dep.androidx.lifecycle_extentions"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$dep.androidx.lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$dep.androidx.lifecycle_version"
     kapt "com.android.databinding:compiler:$dep.androidx.data_binding_compiler_version"
     implementation "androidx.recyclerview:recyclerview-selection:$dep.androidx.material_recycleview_version"
 
     // navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$dep.androidx.navifation_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$dep.androidx.navifation_version"
+    implementation "androidx.navigation:navigation-fragment-ktx:$dep.androidx.navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$dep.androidx.navigation_version"
 
     // kodein
     implementation "org.kodein.di:kodein-di-generic-jvm:$dep.kodein_version"
@@ -72,7 +70,7 @@ dependencies {
     implementation "com.jakewharton.rxrelay2:rxrelay:$dep.rx.rx_android_version"
     implementation "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$dep.rx.binding"
 
-    implementation "com.airbnb.android:lottie:$dep.lottieVersion"
+    implementation "com.airbnb.android:lottie:$dep.lottie_version"
 
     // glide
     implementation "com.github.bumptech.glide:glide:$dep.glide"
@@ -83,7 +81,7 @@ dependencies {
     implementation project(':model')
     implementation project(':services')
 
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

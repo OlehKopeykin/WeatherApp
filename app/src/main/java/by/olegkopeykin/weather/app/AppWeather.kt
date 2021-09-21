@@ -19,11 +19,6 @@ class AppWeather : MultiDexApplication(), KodeinAware {
             import(modelsModule)
             import(servicesModule)
             import(interactorsModule)
-            kodein(this)
         }
-    }
-
-    protected open fun kodein(mainBuilder: Kodein.MainBuilder) {
-
     }
 }
