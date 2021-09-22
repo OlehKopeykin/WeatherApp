@@ -1,11 +1,11 @@
 package by.olegkopeykin.weather.app
 
 import by.olegkopeykin.model.domain.WeatherModel
-import by.olegkopeykin.weather.screens.MainViewModel
-import by.olegkopeykin.weather.screens.citydetails.CityDetailsViewModel
-import by.olegkopeykin.weather.screens.citylist.CityListViewModel
-import by.olegkopeykin.weather.screens.selectcity.SelectCityViewModel
-import by.olegkopeykin.weather.screens.splash.SplashViewModel
+import by.olegkopeykin.weather.ui.screens.MainViewModel
+import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsViewModel
+import by.olegkopeykin.weather.ui.screens.citylist.CityListViewModel
+import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityViewModel
+import by.olegkopeykin.weather.ui.screens.splash.SplashViewModel
 import org.kodein.di.Kodein
 import org.kodein.di.generic.*
 

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather"
         tools:targetApi="n">
-        <activity android:name=".screens.MainActivity"
+        <activity android:name="by.olegkopeykin.weather.ui.screens.MainActivity"
             android:launchMode="singleInstance"
             android:windowSoftInputMode="adjustResize"
             android:exported="true">

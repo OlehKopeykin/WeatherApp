@@ -6,13 +6,13 @@
     <data>
         <variable
             name="adapterCity"
-            type="by.olegkopeykin.weather.screens.selectcity.adapterlist.CityAdapter" />
+            type="by.olegkopeykin.weather.ui.screens.selectcity.adapterlist.CityAdapter" />
         <variable
             name="adapterSearchCity"
-            type="by.olegkopeykin.weather.screens.selectcity.adaptersearch.SearchCityAdapter" />
+            type="by.olegkopeykin.weather.ui.screens.selectcity.adaptersearch.SearchCityAdapter" />
         <variable
             name="viewModel"
-            type="by.olegkopeykin.weather.screens.selectcity.SelectCityViewModel" />
+            type="by.olegkopeykin.weather.ui.screens.selectcity.SelectCityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="by.olegkopeykin.weather.screens.splash.SplashViewModel" />
+            type="by.olegkopeykin.weather.ui.screens.splash.SplashViewModel" />
 
     </data>
 

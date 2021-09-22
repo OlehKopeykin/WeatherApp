@@ -7,10 +7,10 @@
 
         <variable
             name="adapterCity"
-            type="by.olegkopeykin.weather.screens.citylist.adapter.CityWeatherAdapter" />
+            type="by.olegkopeykin.weather.ui.screens.citylist.adapter.CityWeatherAdapter" />
         <variable
             name="viewModel"
-            type="by.olegkopeykin.weather.screens.citylist.CityListViewModel" />
+            type="by.olegkopeykin.weather.ui.screens.citylist.CityListViewModel" />
 
     </data>
 

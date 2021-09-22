@@ -6,11 +6,11 @@
     <data>
         <variable
             name="viewModel"
-            type="by.olegkopeykin.weather.screens.MainViewModel" />
+            type="by.olegkopeykin.weather.ui.screens.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".screens.MainActivity"
+        tools:context=".ui.screens.MainActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

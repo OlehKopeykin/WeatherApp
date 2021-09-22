@@ -6,10 +6,10 @@
     <data>
         <variable
             name="viewModel"
-            type="by.olegkopeykin.weather.screens.citydetails.CityDetailsViewModel" />
+            type="by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsViewModel" />
         <variable
             name="adapter"
-            type="by.olegkopeykin.weather.screens.citydetails.adapter.CityDetailsAdapter" />
+            type="by.olegkopeykin.weather.ui.screens.citydetails.adapter.CityDetailsAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

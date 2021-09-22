@@ -17,12 +17,12 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="by.olegkopeykin.weather.screens.splash.SplashFragment"
+        android:name="by.olegkopeykin.weather.ui.screens.splash.SplashFragment"
         tools:layout="@layout/fragment_splash"/>
 
     <fragment
         android:id="@+id/selectCityFragment"
-        android:name="by.olegkopeykin.weather.screens.selectcity.SelectCityFragment"
+        android:name="by.olegkopeykin.weather.ui.screens.selectcity.SelectCityFragment"
         tools:layout="@layout/fragment_splash">
         <action
             android:id="@+id/action_city_details"
@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/cityListFragment"
-        android:name="by.olegkopeykin.weather.screens.citylist.CityListFragment"
+        android:name="by.olegkopeykin.weather.ui.screens.citylist.CityListFragment"
         tools:layout="@layout/fragment_splash">
 
         <action
@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/cityDetailsFragment"
-        android:name="by.olegkopeykin.weather.screens.citydetails.CityDetailsFragment"
+        android:name="by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsFragment"
         tools:layout="@layout/fragment_splash"/>
 
 </navigation>

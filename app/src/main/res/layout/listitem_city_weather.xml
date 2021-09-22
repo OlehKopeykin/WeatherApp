@@ -21,7 +21,7 @@
             type="String" />
         <variable
             name="listener"
-            type="by.olegkopeykin.weather.screens.citylist.adapter.CityWeatherListener" />
+            type="by.olegkopeykin.weather.ui.screens.citylist.adapter.CityWeatherListener" />
         <variable
             name="item"
             type="by.olegkopeykin.model.domain.WeatherModel" />

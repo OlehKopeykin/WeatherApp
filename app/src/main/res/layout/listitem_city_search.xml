@@ -9,7 +9,7 @@
             type="String" />
         <variable
             name="listener"
-            type="by.olegkopeykin.weather.screens.selectcity.adaptersearch.SearchCityListener" />
+            type="by.olegkopeykin.weather.ui.screens.selectcity.adaptersearch.SearchCityListener" />
         <variable
             name="item"
             type="by.olegkopeykin.model.domain.CityModel" />

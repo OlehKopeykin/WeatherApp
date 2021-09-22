@@ -26,6 +26,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        // Enables Jetpack Compose for this module
+        compose true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -39,6 +44,10 @@ android {
     lintOptions {
         lintConfig file("../lint.xml")
         abortOnError false
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion "$dep.androidx.compose_version"
     }
 }
 
@@ -54,6 +63,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8:$dep.androidx.lifecycle_version"
     kapt "com.android.databinding:compiler:$dep.androidx.data_binding_compiler_version"
     implementation "androidx.recyclerview:recyclerview-selection:$dep.androidx.material_recycleview_version"
+
+    // compose
+    implementation "androidx.activity:activity-compose:$dep.androidx.activity_compose_version"
+    implementation "androidx.compose.material:material:$dep.androidx.compose_version"
+    implementation "androidx.compose.animation:animation:$dep.androidx.compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$dep.androidx.compose_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$dep.androidx.lifecycle_version"
+
 
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$dep.androidx.navigation_version"
