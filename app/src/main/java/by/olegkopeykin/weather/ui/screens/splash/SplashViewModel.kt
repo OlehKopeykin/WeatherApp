@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit
 
 class SplashViewModel(
     router: SplashRouter,
-    private val interactorPref: PrefInteractor,
-    private val interactorCity:CityInteractor
+    interactorPref: PrefInteractor,
+    interactorCity:CityInteractor
 ) : BaseMvvmViewModel<SplashRouter>(router) {
 
     private val isLoading = ObservableBoolean(false)
