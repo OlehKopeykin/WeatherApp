@@ -6,10 +6,9 @@ import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsViewModel
 import by.olegkopeykin.weather.ui.screens.citylist.CityListViewModel
 import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityViewModel
 import by.olegkopeykin.weather.ui.screens.splash.SplashViewModel
-import org.kodein.di.Kodein
-import org.kodein.di.generic.*
+import org.kodein.di.*
 
-val appModule = Kodein.Module("App Weather") {
+val appModule = DI.Module("App Weather") {
 
     bind<MainViewModel>() with singleton { MainViewModel(instance()) }
     bind<SplashViewModel>() with provider { SplashViewModel(instance(), instance(), instance()) }

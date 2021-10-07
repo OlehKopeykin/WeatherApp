@@ -14,10 +14,6 @@ abstract class BaseViewModel : ViewModel() {
         disposables.add(disposable)
     }
 
-    fun Disposable.addDisposable(disposable: CompositeDisposable) {
-        disposables.add(disposable)
-    }
-
     fun Disposable.toComposite(): Disposable {
         disposables.add(this)
         return this

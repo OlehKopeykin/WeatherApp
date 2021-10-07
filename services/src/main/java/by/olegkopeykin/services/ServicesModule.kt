@@ -10,13 +10,9 @@ import by.olegkopeykin.services.network.api.CityApi
 import by.olegkopeykin.services.network.api.WeatherApi
 import by.olegkopeykin.services.preferences.PreferencesHelper
 import by.olegkopeykin.services.preferences.PreferencesHelperImpl
-import org.kodein.di.Kodein
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
-import org.kodein.di.generic.singleton
+import org.kodein.di.*
 
-val servicesModule = Kodein.Module("Services") {
+val servicesModule = DI.Module("Services") {
 
     //db
     bind<DatabaseProvider>() with singleton { DatabaseProviderImpl(instance()) }

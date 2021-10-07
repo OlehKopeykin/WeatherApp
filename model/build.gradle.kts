@@ -27,7 +27,7 @@ dependencies {
 
     // kodein
     val kodeinVersion = rootProject.extra.get("dep.kodein_version") as String
-    implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
 
     //room
     val androidxRoomVersion = rootProject.extra.get("dep.androidx.room_version") as String

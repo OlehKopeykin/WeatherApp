@@ -5,15 +5,12 @@ import androidx.multidex.MultiDexApplication
 import by.olegkopeykin.interactors.interactorsModule
 import by.olegkopeykin.model.modelsModule
 import by.olegkopeykin.services.servicesModule
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.bind
-import org.kodein.di.generic.singleton
+import org.kodein.di.*
 
-class AppWeather : MultiDexApplication(), KodeinAware {
+class AppWeather : MultiDexApplication(), DIAware {
 
-    override val kodein by lazy {
-        Kodein {
+    override val di by lazy {
+        DI {
             bind<Context>() with singleton { this@AppWeather }
             import(appModule)
             import(modelsModule)

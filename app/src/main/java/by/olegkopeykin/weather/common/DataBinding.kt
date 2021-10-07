@@ -5,43 +5,36 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-object DataBinding {
+@BindingAdapter("visibleGone")
+fun View.setVisibilityGone(visible: Boolean?) {
+    this.visibility = if (visible == true) View.VISIBLE else View.GONE
+}
 
-    @BindingAdapter("visibleGone")
-    @JvmStatic
-    fun setVisibilityGone(view: View, visible: Boolean?) {
-        view.visibility = if (visible == true) View.VISIBLE else View.GONE
+@BindingAdapter("visibleInvisible")
+fun View.setVisibilityInvisible(visible: Boolean?) {
+    this.visibility = if (visible == true) View.VISIBLE else View.INVISIBLE
+}
+
+@BindingAdapter("visibleGoneByList")
+fun View.visibleGoneByList(list: List<*>) {
+    this.visibility = if (!list.isNullOrEmpty()) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("visibleGoneByString")
+fun View.visibleGoneByString(string: String?) {
+    this.visibility = if (!string.isNullOrEmpty()) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter(value = ["items", "adapter"], requireAll = false)
+@Suppress("UNCHECKED_CAST")
+fun RecyclerView.setItems(items: List<Any>?, adapter: RecyclerView.Adapter<*>) {
+    if (this.adapter != adapter) {
+        this.adapter = adapter
     }
-
-    @BindingAdapter("visibleInvisible")
-    @JvmStatic
-    fun setVisibilityInvisible(view: View, visible: Boolean?) {
-        view.visibility = if (visible == true) View.VISIBLE else View.INVISIBLE
-    }
-
-    @BindingAdapter("app:visibleGoneByList")
-    @JvmStatic
-    fun visibleGoneByList(view: View, list: List<*>) {
-        view.visibility = if (!list.isNullOrEmpty()) View.VISIBLE else View.GONE
-    }
-
-    @BindingAdapter("app:visibleGoneByString")
-    @JvmStatic
-    fun visibleGoneByString(view: View, string: String?) {
-        view.visibility = if (!string.isNullOrEmpty()) View.VISIBLE else View.GONE
-    }
-
-    @BindingAdapter(value = ["app:items", "app:adapter"], requireAll = false)
-    @JvmStatic
-    fun setItems(view: RecyclerView, items: List<Any>?, adapter: RecyclerView.Adapter<*>) {
-        if (view.adapter != adapter) {
-            view.adapter = adapter
-        }
-        if (items != null) {
-            view.adapter?.also {
-                view.recycledViewPool.clear()
-                (it as ListAdapter<Any, *>).submitList(ArrayList(items))
-            }
+    if (items != null) {
+        this.adapter?.also {
+            this.recycledViewPool.clear()
+            (it as ListAdapter<Any, *>).submitList(ArrayList(items))
         }
     }
 }

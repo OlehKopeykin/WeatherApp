@@ -23,7 +23,7 @@ android {
 dependencies {
     // kodein
     val kodeinVersion = rootProject.extra.get("dep.kodein_version") as String
-    implementation("org.kodein.di:kodein-di-generic-jvm:$kodeinVersion")
+    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
 
     // retrofit
     val retrofitVersion = rootProject.extra.get("dep.retrofit.retrofit_version") as String

@@ -20,7 +20,7 @@ buildscript {
         set("dep.retrofit.retrofit_version","2.6.2")
         set("dep.retrofit.logging_interceptor_version","4.2.2")
 
-        set("dep.kodein_version","6.1.0")
+        set("dep.kodein_version","7.8.0")
 
         set("dep.multidex_version","2.0.1")
 

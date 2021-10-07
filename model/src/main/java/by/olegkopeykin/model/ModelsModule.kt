@@ -1,8 +1,7 @@
 package by.olegkopeykin.model
 
-import org.kodein.di.Kodein
+import org.kodein.di.*
 
-val modelsModule = Kodein.Module("Models") {
-
+val modelsModule = DI.Module("Models") {
 
 }
