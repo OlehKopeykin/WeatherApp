@@ -5,14 +5,9 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.x.closestDI
 
-abstract class BaseMvvmFragment<VM : BaseMvvmViewModel<Router>, Router : MvvmRouter> : Fragment(),
-    DIAware {
+abstract class BaseMvvmFragment<VM : BaseMvvmViewModel<Router>, Router : MvvmRouter> : Fragment() {
 
-    override val di: DI by closestDI()
     abstract val viewModel: VM
     private val disposables = CompositeDisposable()
 

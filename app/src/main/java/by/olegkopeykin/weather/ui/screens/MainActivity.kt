@@ -9,17 +9,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import by.olegkopeykin.weather.R
+import by.olegkopeykin.weather.app.AppWeather
 import by.olegkopeykin.weather.databinding.ActivityMainBinding
 import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsFragment
-import org.kodein.di.DI
-import org.kodein.di.DIAware
-import org.kodein.di.android.closestDI
-import org.kodein.di.instance
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), DIAware {
+class MainActivity : AppCompatActivity() {
 
-    override val di: DI by closestDI()
-    private val viewModel: MainViewModel by instance()
+    @Inject
+    lateinit var viewModel: MainViewModel
+
     private val navigator: NavController
         get() = Navigation.findNavController(
             this,
@@ -29,6 +28,9 @@ class MainActivity : AppCompatActivity(), DIAware {
     private var binding: ActivityMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        (application as AppWeather).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding?.viewModel = viewModel

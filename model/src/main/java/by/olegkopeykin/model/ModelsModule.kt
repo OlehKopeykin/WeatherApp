@@ -1,7 +1,6 @@
 package by.olegkopeykin.model
 
-import org.kodein.di.*
+import dagger.Module
 
-val modelsModule = DI.Module("Models") {
-
-}
+@Module
+class ModelsModule

@@ -10,19 +10,36 @@ import by.olegkopeykin.services.network.api.CityApi
 import by.olegkopeykin.services.network.api.WeatherApi
 import by.olegkopeykin.services.preferences.PreferencesHelper
 import by.olegkopeykin.services.preferences.PreferencesHelperImpl
-import org.kodein.di.*
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
 
-val servicesModule = DI.Module("Services") {
+@Module(includes = [ServiceModuleBind::class])
+class ServicesModule {
+    // db
+    @Provides
+    fun provideCityDao(dbProvider: DatabaseProvider): CityDao = dbProvider.db.cityDao()
+    @Provides
+    fun provideWeatherDao(dbProvider: DatabaseProvider): WeatherDao = dbProvider.db.weatherDao()
 
-    //db
-    bind<DatabaseProvider>() with singleton { DatabaseProviderImpl(instance()) }
-    bind<CityDao>() with provider { instance<DatabaseProvider>().db.cityDao() }
-    bind<WeatherDao>() with provider { instance<DatabaseProvider>().db.weatherDao() }
+    // api
+    @Provides
+    fun getCityApi(networkService: NetworkService): CityApi = networkService.cityApi
+    @Provides
+    fun getWeatherApi(networkService: NetworkService): WeatherApi = networkService.weatherApi
+}
 
-    //api
-    bind<NetworkService>() with singleton { NetworkServiceImpl() }
-    bind<CityApi>() with singleton { instance<NetworkService>().cityApi }
-    bind<WeatherApi>() with singleton { instance<NetworkService>().weatherApi }
+@Module
+private interface ServiceModuleBind {
+    // db
+    @Binds
+    fun bindDatabaseProvider(databaseProviderImpl: DatabaseProviderImpl): DatabaseProvider
 
-    bind<PreferencesHelper>() with singleton { PreferencesHelperImpl(instance()) }
+    // api
+    @Binds
+    fun bindNetworkService(networkServiceImpl: NetworkServiceImpl): NetworkService
+
+    // preference
+    @Binds
+    fun bindPreferenceHelper(preferencesHelperImpl: PreferencesHelperImpl): PreferencesHelper
 }

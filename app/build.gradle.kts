@@ -99,9 +99,10 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$androidxNavigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$androidxNavigationVersion")
 
-    // kodein
-    val kodeinVersion = rootProject.extra.get("dep.kodein_version") as String
-    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
+    // dagger
+    val daggerVersion = rootProject.extra.get("dep.dagger_version") as String
+    implementation("com.google.dagger:dagger:${daggerVersion}")
+    kapt("com.google.dagger:dagger-compiler:${daggerVersion}")
 
     // rx
     val rxAndroidVersion = rootProject.extra.get("dep.rx.rx_android_version") as String

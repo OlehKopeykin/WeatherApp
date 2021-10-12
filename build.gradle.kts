@@ -4,7 +4,7 @@ buildscript {
     extra.apply {
         set("kotlin_version", "1.5.21")
 
-        set("gradle_tools_version", "7.0.2")
+        set("gradle_tools_version", "7.0.3")
 
         set("dep.androidx.appcompat_version", "1.3.1")
         set("dep.androidx.material_version", "1.4.0")
@@ -20,7 +20,7 @@ buildscript {
         set("dep.retrofit.retrofit_version","2.6.2")
         set("dep.retrofit.logging_interceptor_version","4.2.2")
 
-        set("dep.kodein_version","7.8.0")
+        set("dep.dagger_version","2.39.1")
 
         set("dep.multidex_version","2.0.1")
 

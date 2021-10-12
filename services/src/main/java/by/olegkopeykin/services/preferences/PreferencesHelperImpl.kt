@@ -3,8 +3,11 @@ package by.olegkopeykin.services.preferences
 import android.content.Context
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.Observable
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PreferencesHelperImpl(private val context: Context) : PreferencesHelper{
+@Singleton
+class PreferencesHelperImpl @Inject constructor(context: Context) : PreferencesHelper {
 
     private val preferences = context.getSharedPreferences(NAME_PREFS, Context.MODE_PRIVATE)
 

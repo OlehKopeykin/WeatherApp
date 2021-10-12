@@ -11,8 +11,13 @@ import by.olegkopeykin.weather.ui.screens.citylist.CityListRouter
 import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityRouter
 import by.olegkopeykin.weather.ui.screens.splash.SplashRouter
 import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MainViewModel(prefInteractor: PrefInteractor) : BaseViewModel(),
+@Singleton
+class MainViewModel @Inject constructor(
+    prefInteractor: PrefInteractor
+) : BaseViewModel(),
     SplashRouter,
     CityListRouter,
     CityDetailsRouter,
@@ -26,9 +31,9 @@ class MainViewModel(prefInteractor: PrefInteractor) : BaseViewModel(),
         prefInteractor.isLightMode()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                if(it){
+                if (it) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }else{
+                } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
             }, {
@@ -45,11 +50,11 @@ class MainViewModel(prefInteractor: PrefInteractor) : BaseViewModel(),
         postNextScreen.value = Screens.SelectCity
     }
 
-    override fun showCityDetails(weather: WeatherModel){
+    override fun showCityDetails(weather: WeatherModel) {
         postNextScreen.value = Screens.CityDetails(weather)
     }
 
-    override fun onBackClick(){
+    override fun onBackClick() {
         postNextScreen.value = Screens.PrevScreen()
     }
 

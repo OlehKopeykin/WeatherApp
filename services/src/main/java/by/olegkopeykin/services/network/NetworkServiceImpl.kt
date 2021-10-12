@@ -15,9 +15,11 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class NetworkServiceImpl : NetworkService {
+@Singleton
+class NetworkServiceImpl @Inject constructor(): NetworkService {
 
     override val weatherApi: WeatherApi
         get() = apiControlRetrofit.create(WeatherApi::class.java)
@@ -43,9 +45,9 @@ class NetworkServiceImpl : NetworkService {
             addInterceptor(errorInterceptor())
             protocols(arrayListOf(Protocol.HTTP_2, Protocol.HTTP_1_1))
             val interceptor = HttpLoggingInterceptor()
-            if (BuildConfig.DEBUG){
+            if (BuildConfig.DEBUG) {
                 interceptor.level = HttpLoggingInterceptor.Level.BODY
-            }else{
+            } else {
                 interceptor.level = HttpLoggingInterceptor.Level.NONE
             }
             addInterceptor(interceptor)

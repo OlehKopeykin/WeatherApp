@@ -25,9 +25,10 @@ dependencies {
     val gsonVersion = rootProject.extra.get("dep.gson_version") as String
     implementation("com.google.code.gson:gson:$gsonVersion")
 
-    // kodein
-    val kodeinVersion = rootProject.extra.get("dep.kodein_version") as String
-    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
+    // dagger
+    val daggerVersion = rootProject.extra.get("dep.dagger_version") as String
+    implementation("com.google.dagger:dagger:${daggerVersion}")
+    kapt("com.google.dagger:dagger-compiler:${daggerVersion}")
 
     //room
     val androidxRoomVersion = rootProject.extra.get("dep.androidx.room_version") as String

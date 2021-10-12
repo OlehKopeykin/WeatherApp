@@ -1,19 +1,62 @@
 package by.olegkopeykin.weather.app
 
-import by.olegkopeykin.model.domain.WeatherModel
+import android.content.Context
+import by.olegkopeykin.interactors.InteractorModule
+import by.olegkopeykin.model.ModelsModule
+import by.olegkopeykin.services.ServicesModule
+import by.olegkopeykin.weather.ui.screens.MainActivity
 import by.olegkopeykin.weather.ui.screens.MainViewModel
-import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsViewModel
-import by.olegkopeykin.weather.ui.screens.citylist.CityListViewModel
-import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityViewModel
-import by.olegkopeykin.weather.ui.screens.splash.SplashViewModel
-import org.kodein.di.*
+import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsFragment
+import by.olegkopeykin.weather.ui.screens.citydetails.CityDetailsRouter
+import by.olegkopeykin.weather.ui.screens.citylist.CityListFragment
+import by.olegkopeykin.weather.ui.screens.citylist.CityListRouter
+import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityFragment
+import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityRouter
+import by.olegkopeykin.weather.ui.screens.splash.SplashFragment
+import by.olegkopeykin.weather.ui.screens.splash.SplashRouter
+import dagger.Binds
+import dagger.BindsInstance
+import dagger.Component
+import dagger.Module
+import javax.inject.Singleton
 
-val appModule = DI.Module("App Weather") {
+@Singleton
+@Component(
+    modules = [
+        AppModule::class,
+        InteractorModule::class,
+        ServicesModule::class,
+        ModelsModule::class
+    ]
+)
+interface AppComponent {
+    @Component.Factory
+    interface Factory {
+        fun create(@BindsInstance context: Context): AppComponent
+    }
 
-    bind<MainViewModel>() with singleton { MainViewModel(instance()) }
-    bind<SplashViewModel>() with provider { SplashViewModel(instance(), instance(), instance()) }
+    fun inject(mainActivity: MainActivity)
+    fun inject(cityDetailsFragment: CityDetailsFragment)
+    fun inject(cityListFragment: CityListFragment)
+    fun inject(selectCityFragment: SelectCityFragment)
+    fun inject(splashFragment: SplashFragment)
+}
 
-    bind<SelectCityViewModel>() with provider { SelectCityViewModel(instance(), instance(), instance()) }
-    bind<CityListViewModel>() with provider { CityListViewModel(instance(), instance(), instance(), instance()) }
-    bind<CityDetailsViewModel>() with factory { weatherModel: WeatherModel -> CityDetailsViewModel(instance(), weatherModel, instance(), instance()) }
+@Module
+interface AppModule {
+    @Binds
+    fun bindCityDetailsRouter(mainViewModel: MainViewModel): CityDetailsRouter
+    @Binds
+    fun bindCityListRouter(mainViewModel: MainViewModel): CityListRouter
+    @Binds
+    fun bindSelectCityRouter(mainViewModel: MainViewModel): SelectCityRouter
+    @Binds
+    fun bindSplashRouter(mainViewModel: MainViewModel): SplashRouter
+}
+
+fun Context.appComponent(): AppComponent {
+    return when(this) {
+        is AppWeather -> this.appComponent
+        else -> (applicationContext as AppWeather).appComponent
+    }
 }

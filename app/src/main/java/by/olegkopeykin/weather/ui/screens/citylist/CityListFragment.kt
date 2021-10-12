@@ -1,20 +1,31 @@
 package by.olegkopeykin.weather.ui.screens.citylist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import by.olegkopeykin.weather.R
+import by.olegkopeykin.weather.app.appComponent
 import by.olegkopeykin.weather.common.BaseMvvmFragment
-import by.olegkopeykin.weather.common.viewModelLazyInstance
 import by.olegkopeykin.weather.databinding.FragmentCityListBinding
 import by.olegkopeykin.weather.ui.screens.citylist.adapter.CityWeatherAdapter
+import javax.inject.Inject
 
 class CityListFragment : BaseMvvmFragment<CityListViewModel, CityListRouter>() {
 
-    override val viewModel: CityListViewModel by viewModelLazyInstance()
+    @Inject
+    lateinit var vmFactory: CityListViewModel.Factory
+
+    override val viewModel: CityListViewModel by viewModels { vmFactory }
+
+    override fun onAttach(context: Context) {
+        context.appComponent().inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

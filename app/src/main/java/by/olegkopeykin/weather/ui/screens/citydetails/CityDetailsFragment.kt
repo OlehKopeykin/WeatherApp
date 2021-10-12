@@ -1,21 +1,32 @@
 package by.olegkopeykin.weather.ui.screens.citydetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import by.olegkopeykin.model.domain.WeatherModel
 import by.olegkopeykin.weather.R
+import by.olegkopeykin.weather.app.appComponent
 import by.olegkopeykin.weather.common.BaseMvvmFragment
-import by.olegkopeykin.weather.common.viewModelLazyFactory
 import by.olegkopeykin.weather.databinding.FragmentCityDetailsBinding
 import by.olegkopeykin.weather.ui.screens.citydetails.adapter.CityDetailsAdapter
+import javax.inject.Inject
 
 class CityDetailsFragment : BaseMvvmFragment<CityDetailsViewModel, CityDetailsRouter>() {
 
-    override val viewModel: CityDetailsViewModel by viewModelLazyFactory{
-        arguments?.getParcelable(WEATHER_MODEL)?: WeatherModel.NONE
+    @Inject
+    lateinit var vmDaggerFactory: CityDetailsViewModel.Factory.DaggerFactory
+
+    override val viewModel: CityDetailsViewModel by viewModels {
+        vmDaggerFactory.create(arguments?.getParcelable(WEATHER_MODEL) ?: WeatherModel.NONE)
+    }
+
+    override fun onAttach(context: Context) {
+        context.appComponent().inject(this)
+        super.onAttach(context)
     }
 
     override fun onCreateView(
@@ -35,7 +46,7 @@ class CityDetailsFragment : BaseMvvmFragment<CityDetailsViewModel, CityDetailsRo
         return binding.root
     }
 
-    companion object{
+    companion object {
         const val WEATHER_MODEL = "CITY_MODEL"
     }
 }

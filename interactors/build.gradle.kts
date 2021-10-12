@@ -21,14 +21,15 @@ android {
 }
 
 dependencies {
-    // kodein
-    val kodeinVersion = rootProject.extra.get("dep.kodein_version") as String
-    implementation("org.kodein.di:kodein-di-framework-android-x:$kodeinVersion")
-
     // retrofit
     val retrofitVersion = rootProject.extra.get("dep.retrofit.retrofit_version") as String
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
     implementation("com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion")
+
+    // dagger
+    val daggerVersion = rootProject.extra.get("dep.dagger_version") as String
+    implementation("com.google.dagger:dagger:${daggerVersion}")
+    kapt("com.google.dagger:dagger-compiler:${daggerVersion}")
 
     // rx
     val rxAndroidVersion = rootProject.extra.get("dep.rx.rx_android_version") as String

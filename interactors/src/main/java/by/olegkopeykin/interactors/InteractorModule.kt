@@ -6,12 +6,17 @@ import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.interactors.pref.PrefInteractorImpl
 import by.olegkopeykin.interactors.weather.WeatherInteractor
 import by.olegkopeykin.interactors.weather.WeatherInteractorImpl
-import org.kodein.di.*
+import dagger.Binds
+import dagger.Module
 
-val interactorsModule = DI.Module("Interactors") {
+@Module
+interface InteractorModule {
+    @Binds
+    fun getPrefInteractor(prefInteractorImpl: PrefInteractorImpl): PrefInteractor
 
-    bind<PrefInteractor>() with singleton { PrefInteractorImpl(instance()) }
-    bind<CityInteractor>() with singleton { CityInteractorImpl(instance(), instance(), instance()) }
+    @Binds
+    fun getCityInteractor(cityInteractorImpl: CityInteractorImpl): CityInteractor
 
-    bind<WeatherInteractor>() with singleton { WeatherInteractorImpl(instance(), instance(), instance()) }
+    @Binds
+    fun getWeatherInteractor(weatherInteractorImpl: WeatherInteractorImpl): WeatherInteractor
 }
