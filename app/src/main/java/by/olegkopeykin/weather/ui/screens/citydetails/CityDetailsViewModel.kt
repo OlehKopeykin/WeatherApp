@@ -39,8 +39,7 @@ class CityDetailsViewModel(
                 listWeather.set(it)
             }, {
                 it.printStackTrace()
-            })
-            .toComposite()
+            }).toComposite()
     }
 
     fun onFavoriteClick() {

@@ -48,8 +48,7 @@ class CityListViewModel(
                 isLightColorMode.set(it)
             }, {
                 it.printStackTrace()
-            })
-            .toComposite()
+            }).toComposite()
 
         weatherInteractor.getWeatherNowCitiesFromDB()
             .observeOn(AndroidSchedulers.mainThread())

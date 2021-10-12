@@ -7,8 +7,6 @@ import by.olegkopeykin.interactors.cities.CityInteractor
 import by.olegkopeykin.interactors.pref.PrefInteractor
 import by.olegkopeykin.weather.common.BaseMvvmViewModel
 import by.olegkopeykin.weather.common.toObservable
-import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityRouter
-import by.olegkopeykin.weather.ui.screens.selectcity.SelectCityViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
@@ -27,16 +25,14 @@ class SplashViewModel(
 
     init {
         if (isFirstInit) {
-            addDisposable(
-                interactorCity.addDefaultCities()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({
-                        isAddedCities.set(true)
-                    }, {
-                        isAddedCities.set(true)
-                        it.printStackTrace()
-                    })
-            )
+            interactorCity.addDefaultCities()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    isAddedCities.set(true)
+                }, {
+                    isAddedCities.set(true)
+                    it.printStackTrace()
+                }).toComposite()
         } else {
             isAddedCities.set(true)
         }
@@ -44,19 +40,16 @@ class SplashViewModel(
 
     fun doRouting() {
         isLoading.set(true)
-        addDisposable(
-            Observables.combineLatest(
-                isAddedCities.toObservable().filter { it },
-                Observable.timer(LAUNCH_TIMER, TimeUnit.MILLISECONDS)
-            )
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    routingScreens()
-                    isLoading.set(false)
-                }, {
-                    it.printStackTrace()
-                })
-        )
+        Observables.combineLatest(
+            isAddedCities.toObservable().filter { it },
+            Observable.timer(LAUNCH_TIMER, TimeUnit.MILLISECONDS)
+        ).observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                routingScreens()
+                isLoading.set(false)
+            }, {
+                it.printStackTrace()
+            }).toComposite()
     }
 
     private fun routingScreens() {

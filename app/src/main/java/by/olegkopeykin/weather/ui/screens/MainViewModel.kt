@@ -38,8 +38,7 @@ class MainViewModel @Inject constructor(
                 }
             }, {
                 it.printStackTrace()
-            })
-            .toComposite()
+            }).toComposite()
     }
 
     override fun showCityList() {
